@@ -1,0 +1,23 @@
+
+.circle-indicator {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.circle-success {
+  background-color: #28a745;
+}
+
+.circle-danger {
+  background-color: #dc3545;
+}
+
+.circle-warning {
+  background-color: #ffc107;
+}
+
+.circle-default {
+  background-color: #dc3545;
+}

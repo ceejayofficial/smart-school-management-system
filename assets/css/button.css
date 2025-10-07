@@ -1,0 +1,16 @@
+.login-btn {
+    background-color: #fef08a;
+    color: #000; /* Dark text for contrast */
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px;
+    font-weight: bold;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+  
+  .login-btn:hover {
+    background-color: #fde047; /* Slightly darker on hover */
+  }
+  

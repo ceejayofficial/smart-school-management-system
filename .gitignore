@@ -1,0 +1,7 @@
+# Ignore the .env file (and other sensitive files)
+.env
+
+# Ignore Composer's vendor folder
+/vendor/
+
+# Ignore other sensitive files you want to exclude from version control

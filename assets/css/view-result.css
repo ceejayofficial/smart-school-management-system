@@ -1,0 +1,111 @@
+/* Base Styles */
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #ffffff;
+    color: #000;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    max-width: 800px;
+    margin: auto;
+    background-color: #ffffff;
+    padding: 2rem;
+    box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    border-radius: 8px;
+    position: relative; /* Required for absolute positioning inside */
+}
+
+/* Typography */
+h2, h4 {
+    word-break: break-word;
+    text-transform: uppercase;
+    text-align: left; /* Changed from center to left */
+}
+
+/* Table Styles */
+.table {
+    width: 100%;
+    font-size: 0.95rem;
+    margin-top: 1rem;
+}
+
+.table th,
+.table td {
+    padding: 0.75rem;
+    vertical-align: middle;
+    border-bottom: 1px solid #dee2e6;
+}
+
+/* Print Button */
+.print-btn {
+    position: absolute; /* Now inside .container */
+    top: 0;
+    right: 0;
+    margin: 1rem;
+    z-index: 10;
+}
+
+@media print {
+    .print-btn {
+        display: none;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 576px) {
+    h2, h4 {
+        font-size: 1.2rem;
+        text-align: left; /* Also ensure mobile view is left-aligned */
+    }
+
+    .card-body {
+        padding: 1rem 0.5rem;
+    }
+
+    .table thead {
+        display: none;
+    }
+
+    .table, .table tbody, .table tr, .table td {
+        display: block;
+        width: 100%;
+    }
+
+    .table td {
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+        border: none;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 1rem;
+        width: 45%;
+        padding-left: 0.5rem;
+        font-weight: bold;
+        text-align: left;
+    }
+
+    .table td:last-child {
+        border-bottom: 2px solid #000;
+    }
+
+    .print-btn {
+        position: static;
+        text-align: center;
+        margin: 1rem auto;
+    }
+}
+/* Typography */
+h2, h4 {
+    word-break: break-word;
+    text-transform: uppercase;
+    text-align: left;         /* Align left */
+    color: #045515;           /* Bootstrap green */
+    margin-bottom: 1rem;
+}

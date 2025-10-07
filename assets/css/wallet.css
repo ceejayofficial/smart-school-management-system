@@ -1,0 +1,26 @@
+
+body {
+  background-color: #ffffff;
+}
+.wallet-card {
+  border: 1px solid #dee2e6;
+  border-radius: 1rem;
+  background-color: #ffffff;
+  padding: 3rem 2rem;
+  text-align: center;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+.wallet-card:hover {
+  transform: translateY(-5px);
+}
+.wallet-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #6c757d;
+  margin-bottom: 0.75rem;
+}
+.wallet-value {
+  font-size: 4rem;
+  font-weight: 800;
+}
