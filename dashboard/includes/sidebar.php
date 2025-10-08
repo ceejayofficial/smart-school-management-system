@@ -17,32 +17,38 @@ $current_page = $_GET['page'] ?? 'home';
 <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous"></script>
 
 
-    <nav class="mt-6 flex flex-col space-y-1">
-        <a href="admin_dashboard.php?page=home" class="flex items-center py-3 px-6 transition hover:bg-blue-800 <?= $current_page === 'home' ? 'bg-blue-700 font-semibold' : '' ?>">
-            <i class="fas fa-tachometer-alt mr-3"></i> Dashboard
-        </a>
-        <a href="admin_dashboard.php?page=students" class="flex items-center py-3 px-6 transition hover:bg-blue-800 <?= $current_page === 'students' ? 'bg-blue-700 font-semibold' : '' ?>">
-            <i class="fas fa-user-graduate mr-3"></i> Students
-        </a>
-        <a href="admin_dashboard.php?page=teachers" class="flex items-center py-3 px-6 transition hover:bg-blue-800 <?= $current_page === 'teachers' ? 'bg-blue-700 font-semibold' : '' ?>">
-            <i class="fas fa-chalkboard-teacher mr-3"></i> Teachers
-        </a>
-        <a href="admin_dashboard.php?page=classes" class="flex items-center py-3 px-6 transition hover:bg-blue-800 <?= $current_page === 'classes' ? 'bg-blue-700 font-semibold' : '' ?>">
-            <i class="fas fa-school mr-3"></i> Classes
-        </a>
-        <a href="admin_dashboard.php?page=exams" class="flex items-center py-3 px-6 transition hover:bg-blue-800 <?= $current_page === 'exams' ? 'bg-blue-700 font-semibold' : '' ?>">
-            <i class="fas fa-file-alt mr-3"></i> Exams & Results
-        </a>
-        <a href="admin_dashboard.php?page=fees" class="flex items-center py-3 px-6 transition hover:bg-blue-800 <?= $current_page === 'fees' ? 'bg-blue-700 font-semibold' : '' ?>">
-            <i class="fas fa-dollar-sign mr-3"></i> Fees
-        </a>
+   <nav class="mt-6 flex flex-col space-y-1">
+    <a href="admin_dashboard.php?page=home" class="flex items-center py-3 px-6 transition hover:bg-blue-800 <?= $current_page === 'home' ? 'bg-blue-700 font-semibold' : '' ?>">
+        <i class="fas fa-tachometer-alt mr-3"></i> Dashboard
+    </a>
+    <a href="admin_dashboard.php?page=students" class="flex items-center py-3 px-6 transition hover:bg-blue-800 <?= $current_page === 'students' ? 'bg-blue-700 font-semibold' : '' ?>">
+        <i class="fas fa-user-graduate mr-3"></i> Students
+    </a>
+    <a href="admin_dashboard.php?page=teachers" class="flex items-center py-3 px-6 transition hover:bg-blue-800 <?= $current_page === 'teachers' ? 'bg-blue-700 font-semibold' : '' ?>">
+        <i class="fas fa-chalkboard-teacher mr-3"></i> Teachers
+    </a>
+    <a href="admin_dashboard.php?page=classes" class="flex items-center py-3 px-6 transition hover:bg-blue-800 <?= $current_page === 'classes' ? 'bg-blue-700 font-semibold' : '' ?>">
+        <i class="fas fa-school mr-3"></i> Classes
+    </a>
+    <a href="admin_dashboard.php?page=exams" class="flex items-center py-3 px-6 transition hover:bg-blue-800 <?= $current_page === 'exams' ? 'bg-blue-700 font-semibold' : '' ?>">
+        <i class="fas fa-file-alt mr-3"></i> Exams & Results
+    </a>
+    <a href="admin_dashboard.php?page=fees" class="flex items-center py-3 px-6 transition hover:bg-blue-800 <?= $current_page === 'fees' ? 'bg-blue-700 font-semibold' : '' ?>">
+        <i class="fas fa-dollar-sign mr-3"></i> Fees
+    </a>
 
-        <!-- Logout -->
-        <button id="logoutBtn" class="flex items-center justify-center py-3 px-6 mt-6 bg-red-700 hover:bg-red-800 rounded transition">
-            <i class="fas fa-sign-out-alt mr-2"></i> Logout
-        </button>
-    </nav>
+    <!-- Divider before logout -->
+    <div class="border-t border-blue-800 my-6"></div>
+
+    <!-- Logout -->
+    <button id="logoutBtn" class="flex items-center justify-center py-3 px-6 mt-2 bg-red-700 hover:bg-red-800 rounded transition">
+        <i class="fas fa-sign-out-alt mr-2"></i> Logout
+    </button>
+</nav>
+
 </aside>
+
+<?php include "preloader.php"; ?>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>

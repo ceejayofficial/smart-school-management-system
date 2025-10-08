@@ -12,7 +12,7 @@ require_once "auth.php"; // include this for all admin pages
   <div class="flex-1 flex flex-col">
 
     <!-- Fixed Top Header -->
-    <header class="fixed top-0 left-0 md:left-64 right-0 bg-white shadow z-50 p-4 flex justify-between items-center">
+    <header class="fixed top-0 left-0 md:left-64 right-0 bg-white shadow z-30 p-4 flex justify-between items-center">
         <!-- Dashboard Title -->
         <span class="text-gray-700 font-semibold">Hi, <?= htmlspecialchars($username) ?></span>
 

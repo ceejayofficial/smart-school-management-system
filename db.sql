@@ -1,32 +1,40 @@
--- =========================
--- Table: classes
--- =========================
-CREATE TABLE classes (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    class_name VARCHAR(100) NOT NULL,
-    level ENUM('KG','Primary','JHS','SHS') NOT NULL,
+-- USERS / ADMINS
+CREATE TABLE users (
+    user_id INT AUTO_INCREMENT PRIMARY KEY,
+    username VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(255) NOT NULL,
+    role ENUM('admin', 'teacher', 'accountant', 'registrar') DEFAULT 'admin',
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Pre-populate Classes
-INSERT INTO classes (class_name, level) VALUES
-('KG1','KG'),
-('KG2','KG'),
-('Class One','Primary'),
-('Class Two','Primary'),
-('Class Three','Primary'),
-('Class Four','Primary'),
-('Class Five','Primary'),
-('Class Six','Primary'),
-('Form One','JHS'),
-('Form Two','JHS'),
-('Form Three','JHS'),
-('SHS One','SHS'),
-('SHS Two','SHS'),
-('SHS Three','SHS');
+-- CLASSES
+CREATE TABLE classes (
+    class_id INT AUTO_INCREMENT PRIMARY KEY,
+    level ENUM('Creche', 'Nursery', 'Primary', 'JHS', 'SHS', 'Tertiary') NOT NULL,
+    class_name VARCHAR(100) NOT NULL
+);
 
--- =========================
--- Table: admissions (Admission Form)
+-- STUDENTS
+CREATE TABLE students (
+    student_id INT AUTO_INCREMENT PRIMARY KEY,
+    admission_no VARCHAR(50) UNIQUE NOT NULL,   -- auto generated admission number
+    student_number VARCHAR(50) UNIQUE NOT NULL, -- assigned by registrar
+    first_name VARCHAR(100) NOT NULL,
+    last_name VARCHAR(100) NOT NULL,
+    dob DATE NOT NULL,
+    gender ENUM('Male', 'Female') NOT NULL,
+    region VARCHAR(100) NOT NULL,
+    town VARCHAR(100) NOT NULL,
+    ghana_card VARCHAR(100),   -- optional
+    house_address TEXT,
+    phone VARCHAR(20),
+    email VARCHAR(100),
+    class_id INT NOT NULL,
+    promoted BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (class_id) REFERENCES classes(class_id) ON DELETE CASCADE
+);
+
 -- =========================
 CREATE TABLE admissions (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -61,80 +69,93 @@ CREATE TABLE admissions (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- =========================
--- Table: students (Registered Students)
--- =========================
-CREATE TABLE students (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    student_number VARCHAR(50) UNIQUE,              -- Generated (e.g. STU2025-001)
-    admission_id INT NOT NULL,
-    class_id INT,
-    email VARCHAR(100),
-    phone VARCHAR(20),
-    admission_date DATE DEFAULT CURRENT_DATE,
-    is_active BOOLEAN DEFAULT TRUE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (admission_id) REFERENCES admissions(id) ON DELETE CASCADE,
-    FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE SET NULL
+
+-- SUBJECTS
+CREATE TABLE subjects (
+    subject_id INT AUTO_INCREMENT PRIMARY KEY,
+    subject_name VARCHAR(100) NOT NULL,
+    level ENUM('Creche', 'Nursery', 'Primary', 'JHS', 'SHS', 'Tertiary') NOT NULL
 );
 
--- =========================
--- Table: exams
--- =========================
+-- EXAMS
 CREATE TABLE exams (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    exam_name VARCHAR(100) NOT NULL,                -- e.g. Midterm, End of Term
-    term ENUM('1st','2nd','3rd') NOT NULL,
-    academic_year VARCHAR(20) NOT NULL,             -- e.g. 2024/2025
+    exam_id INT AUTO_INCREMENT PRIMARY KEY,
+    exam_name VARCHAR(100) NOT NULL,
+    exam_term ENUM('1st', '2nd', '3rd') NOT NULL,
+    academic_year VARCHAR(20) NOT NULL,
     class_id INT NOT NULL,
+    subject_id INT NOT NULL,
     exam_date DATE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (class_id) REFERENCES classes(id) ON DELETE CASCADE
+    FOREIGN KEY (class_id) REFERENCES classes(class_id) ON DELETE CASCADE,
+    FOREIGN KEY (subject_id) REFERENCES subjects(subject_id) ON DELETE CASCADE
 );
 
--- =========================
--- Table: received_results (Raw results before approval)
--- =========================
-CREATE TABLE received_results (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    student_id INT NOT NULL,
-    exam_id INT NOT NULL,
-    subject VARCHAR(100) NOT NULL,
-    score DECIMAL(5,2) NOT NULL,
-    teacher_comments VARCHAR(255),
-    submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    status ENUM('Pending','Reviewed','Approved','Rejected') DEFAULT 'Pending',
-    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
-    FOREIGN KEY (exam_id) REFERENCES exams(id) ON DELETE CASCADE
-);
-
--- =========================
--- Table: results (Final approved results)
--- =========================
+-- RESULTS (Added parent_contact for SMS)
 CREATE TABLE results (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+    result_id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT NOT NULL,
     exam_id INT NOT NULL,
-    subject VARCHAR(100) NOT NULL,
+    subject_id INT NOT NULL,
     score DECIMAL(5,2) NOT NULL,
-    grade VARCHAR(2),
+    grade VARCHAR(5),
     remarks VARCHAR(255),
-    published_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE,
-    FOREIGN KEY (exam_id) REFERENCES exams(id) ON DELETE CASCADE
+    parent_contact VARCHAR(20) NOT NULL, -- added field for SMS notifications
+    FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE,
+    FOREIGN KEY (exam_id) REFERENCES exams(exam_id) ON DELETE CASCADE,
+    FOREIGN KEY (subject_id) REFERENCES subjects(subject_id) ON DELETE CASCADE
+);
+
+-- FEES (School and other fees)
+CREATE TABLE fees (
+    fee_id INT AUTO_INCREMENT PRIMARY KEY,
+    class_id INT NOT NULL,
+    academic_year VARCHAR(20) NOT NULL,
+    term ENUM('1st', '2nd', '3rd') NOT NULL,
+    fee_type ENUM('School', 'PTA', 'Exam', 'Other') DEFAULT 'School',
+    amount DECIMAL(10,2) NOT NULL,
+    UNIQUE(class_id, academic_year, term, fee_type),
+    FOREIGN KEY (class_id) REFERENCES classes(class_id) ON DELETE CASCADE
+);
+
+-- PAYMENTS
+CREATE TABLE fee_payments (
+    payment_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    fee_id INT NOT NULL,
+    amount_paid DECIMAL(10,2) NOT NULL,
+    payment_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE,
+    FOREIGN KEY (fee_id) REFERENCES fees(fee_id) ON DELETE CASCADE
+);
+
+-- OUTSTANDING BALANCES (Debt carried forward)
+CREATE TABLE outstanding_balances (
+    balance_id INT AUTO_INCREMENT PRIMARY KEY,
+    student_id INT NOT NULL,
+    class_id INT NOT NULL,
+    academic_year VARCHAR(20) NOT NULL,
+    total_due DECIMAL(10,2) NOT NULL,
+    total_paid DECIMAL(10,2) DEFAULT 0.00,
+    balance DECIMAL(10,2) GENERATED ALWAYS AS (total_due - total_paid) STORED,
+    status ENUM('Cleared', 'Owing') DEFAULT 'Owing',
+    FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE,
+    FOREIGN KEY (class_id) REFERENCES classes(class_id) ON DELETE CASCADE
 );
 
 -- =========================
--- Table: fees
+-- PROMOTIONS (carry over unpaid balances on promotion or repeat)
 -- =========================
-CREATE TABLE fees (
-    id INT AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE promotions (
+    promotion_id INT AUTO_INCREMENT PRIMARY KEY,
     student_id INT NOT NULL,
-    amount DECIMAL(10,2) NOT NULL,
-    description VARCHAR(255),
-    status ENUM('Paid','Pending','Partial') DEFAULT 'Pending',
-    due_date DATE,
-    paid_date DATE,
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (student_id) REFERENCES students(id) ON DELETE CASCADE
+    from_class_id INT NOT NULL,
+    to_class_id INT NOT NULL, -- same as from_class_id if repeated
+    from_academic_year VARCHAR(20) NOT NULL,
+    to_academic_year VARCHAR(20) NOT NULL,
+    promoted_or_repeated ENUM('Promoted','Repeated') NOT NULL,
+    promoted_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    balance_carried DECIMAL(10,2) DEFAULT 0.00,
+    FOREIGN KEY (student_id) REFERENCES students(student_id) ON DELETE CASCADE,
+    FOREIGN KEY (from_class_id) REFERENCES classes(class_id) ON DELETE CASCADE,
+    FOREIGN KEY (to_class_id) REFERENCES classes(class_id) ON DELETE CASCADE
 );
