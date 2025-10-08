@@ -9,9 +9,13 @@ $current_page = $_GET['page'] ?? 'home';
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-papxQ+..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <aside class="w-64 bg-blue-900 text-white flex-shrink-0 fixed h-full hidden md:flex flex-col">
-    <div class="p-6 text-center font-bold text-2xl border-b border-blue-800">
-        Smart School
-    </div>
+  <div class="p-6 text-center border-b border-blue-800">
+    <i class="fas fa-user-graduate text-white text-5xl"></i>
+</div>
+
+<!-- Font Awesome -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous"></script>
+
 
     <nav class="mt-6 flex flex-col space-y-1">
         <a href="admin_dashboard.php?page=home" class="flex items-center py-3 px-6 transition hover:bg-blue-800 <?= $current_page === 'home' ? 'bg-blue-700 font-semibold' : '' ?>">

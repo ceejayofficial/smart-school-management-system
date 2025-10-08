@@ -23,7 +23,7 @@ require_once "auth.php"; // include this for all admin pages
     </header>
 
     <!-- Scrollable Content -->
-    <main class="p-8 mt-20 h-screen overflow-auto bg-white">
+    <main class="p-8 mt-20 h-screen  bg-white">
 
         <?php
         // Load content dynamically based on "page" query parameter

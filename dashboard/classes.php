@@ -2,7 +2,7 @@
 require_once "auth.php"; // Ensure admin is logged in
 ?>
 
-<div class="p-8 h-screen bg-white overflow-auto ml-0 md:ml-64">
+<div class="p-8 h-screen bg-white  ml-0 md:ml-64">
     <!-- Classes Actions Grid: 2 per row -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
