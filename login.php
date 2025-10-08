@@ -1,4 +1,15 @@
-<?php include "includes/header.php"; ?>
+<?php 
+include "includes/header.php"; 
+session_start();
+
+// Capture error or success from login_process.php via session
+$error = $_SESSION['login_error'] ?? '';
+$success = $_SESSION['login_success'] ?? '';
+$redirect = $_SESSION['login_redirect'] ?? '';
+
+// Clear session messages so they don’t persist
+unset($_SESSION['login_error'], $_SESSION['login_success'], $_SESSION['login_redirect']);
+?>
 
 <div class="relative min-h-screen flex items-center justify-center px-4 bg-gray-100">
 
@@ -20,12 +31,12 @@
 
         <form method="POST" action="login_process.php" class="space-y-5">
             <div>
-                <label for="username" class="block text-gray-700 font-medium mb-2">Username</label>
+                <label for="email" class="block text-gray-700 font-medium mb-2">Email</label>
                 <input
-                    type="text"
-                    name="username"
-                    id="username"
-                    placeholder="Enter your username"
+                    type="email"
+                    name="email"
+                    id="email"
+                    placeholder="Enter your email"
                     class="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:outline-none"
                     required
                 />
@@ -56,16 +67,28 @@
                 </a>
             </div>
         </form>
-
-        <!-- Optional: SweetAlert error display -->
-        <?php if (!empty($error)): ?>
-            <script>
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Login Failed',
-                    text: <?= json_encode($error) ?>
-                });
-            </script>
-        <?php endif; ?>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    <?php if (!empty($error)): ?>
+        Swal.fire({
+            icon: 'error',
+            title: 'Login Failed',
+            text: <?= json_encode($error) ?>
+        });
+    <?php endif; ?>
+
+    <?php if (!empty($success) && !empty($redirect)): ?>
+        Swal.fire({
+            icon: 'success',
+            title: 'Login Successful',
+            text: <?= json_encode($success) ?>,
+            timer: 1500,
+            showConfirmButton: false
+        }).then(() => {
+            window.location.href = <?= json_encode($redirect) ?>;
+        });
+    <?php endif; ?>
+</script>

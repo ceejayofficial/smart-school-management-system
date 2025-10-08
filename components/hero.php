@@ -15,7 +15,7 @@
     <p class="text-lg lg:text-xl text-gray-200 mb-6 max-w-2xl">
       Manage students, teachers, exams, fees, and parent communication all from one secure, modern dashboard.
     </p>
-    <a href="#login" class="bg-blue-600 hover:bg-blue-700 transition-colors text-white font-semibold py-3 px-6 rounded-md shadow-lg">
+    <a href="./login.php" class="bg-blue-600 hover:bg-blue-700 transition-colors text-white font-semibold py-3 px-6 rounded-md shadow-lg">
       Get Started
     </a>
   </div>

@@ -1,61 +1,75 @@
 <?php
 session_start();
-require_once "../includes/db.php";
+require_once "db.php";
 
-$error = '';
-
+// Only handle POST requests
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
-    $username = trim($_POST['username'] ?? '');
+
+    $email = trim($_POST['email'] ?? '');
     $password = trim($_POST['password'] ?? '');
 
-    if (empty($username) || empty($password)) {
-        $error = "Please fill in both fields.";
-    } else {
-        $stmt = $conn->prepare("SELECT id, username, password, role FROM users WHERE username = ?");
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-        $stmt->store_result();
+    // Validate input
+    if (empty($email) || empty($password)) {
+        $_SESSION['login_error'] = "Please fill in both fields.";
+        header("Location: login.php");
+        exit;
+    }
 
-        if ($stmt->num_rows === 1) {
-            $stmt->bind_result($userId, $dbUsername, $dbPasswordHash, $role);
-            $stmt->fetch();
+    // Prepare statement to get user by email
+    $stmt = $conn->prepare("SELECT id, username, email, password, role FROM users WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $stmt->store_result();
 
-            if (password_verify($password, $dbPasswordHash)) {
-                session_regenerate_id(true);
-                $_SESSION['user_id'] = $userId;
-                $_SESSION['username'] = $dbUsername;
-                $_SESSION['role'] = $role;
+    if ($stmt->num_rows === 1) {
+        $stmt->bind_result($userId, $username, $dbEmail, $dbPasswordHash, $role);
+        $stmt->fetch();
 
-                switch ($role) {
-                    case 'admin':
-                        header("Location: ../dashboard/admin_dashboard.php");
-                        break;
-                    case 'teacher':
-                        header("Location: ../dashboard/teacher_dashboard.php");
-                        break;
-                    case 'parent':
-                        if (!isset($_SESSION['accepted_terms']) || $_SESSION['accepted_terms'] !== true) {
-                            header("Location: ../terms.php");
-                        } else {
-                            header("Location: ../dashboard/parent_dashboard.php");
-                        }
-                        break;
-                }
-                exit;
-            } else {
-                $error = "Invalid username or password.";
+        if (password_verify($password, $dbPasswordHash)) {
+            // Successful login
+            session_regenerate_id(true);
+            $_SESSION['user_id'] = $userId;
+            $_SESSION['username'] = $username;
+            $_SESSION['email'] = $dbEmail;
+            $_SESSION['role'] = $role;
+
+            // Redirect based on role
+            switch ($role) {
+                case 'admin':
+                    $redirect = "dashboard/admin_dashboard.php";
+                    break;
+                case 'teacher':
+                    $redirect = "dashboard/teacher_dashboard.php";
+                    break;
+                case 'parent':
+                    $redirect = "dashboard/parent_dashboard.php";
+                    break;
+                default:
+                    $redirect = "login.php"; // fallback
             }
+
+            $_SESSION['login_success'] = "Login successful! Redirecting...";
+            $_SESSION['login_redirect'] = $redirect;
+            header("Location: login.php");
+            exit;
+
         } else {
-            $error = "Invalid username or password.";
+            $_SESSION['login_error'] = "Invalid email or password.";
+            header("Location: login.php");
+            exit;
         }
 
-        $stmt->close();
+    } else {
+        $_SESSION['login_error'] = "Invalid email or password.";
+        header("Location: login.php");
+        exit;
     }
-}
 
-// Handle error feedback with SweetAlert
-if ($error) {
-    echo "<script src='https://cdn.jsdelivr.net/npm/sweetalert2@11'></script>";
-    echo "<script>Swal.fire({icon:'error',title:'Login Failed',text:".json_encode($error)."})</script>";
+    $stmt->close();
+
+} else {
+    // Redirect if page accessed directly
+    header("Location: login.php");
+    exit;
 }
 ?>

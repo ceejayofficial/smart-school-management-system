@@ -1,22 +1,21 @@
 <header class="bg-blue-600 text-white fixed w-full z-50 shadow-md">
   <div class="container mx-auto flex justify-between items-center p-4">
-  <!-- Logo -->
-<a href="#" class="flex items-center space-x-2">
-  <img src="./assets/img/logo.png" alt="Smart School Logo" class="w-10 h-10 object-contain">
-  <span class="text-xl font-bold">Smart School System</span>
-</a>
+    <!-- Logo -->
+    <a href="#" class="flex items-center space-x-2">
+      <img src="./assets/img/logo.png" alt="Smart School Logo" class="w-10 h-10 object-contain">
+      <span class="text-xl font-bold">Smart School System</span>
+    </a>
 
-
-    <!-- Desktop Navigation -->
-    <nav class="hidden md:flex space-x-6 items-center">
+    <!-- Desktop Navigation (hidden on sm and md, visible lg+) -->
+    <nav class="hidden lg:flex space-x-6 items-center">
       <a href="#features" class="hover:text-gray-200 transition">Features</a>
       <a href="#about" class="hover:text-gray-200 transition">About</a>
       <a href="#contact" class="hover:text-gray-200 transition">Contact</a>
       <a href="./login.php" class="hover:text-gray-200 transition font-semibold">Login</a>
     </nav>
 
-    <!-- Hamburger Button -->
-    <button id="menu-btn" class="md:hidden flex flex-col justify-between w-8 h-8 focus:outline-none z-50">
+    <!-- Hamburger Button (visible sm and md, hidden lg+) -->
+    <button id="menu-btn" class="lg:hidden flex flex-col justify-between w-8 h-8 focus:outline-none z-50">
       <span class="block h-1 w-full bg-white rounded transition-transform origin-top-left"></span>
       <span class="block h-1 w-full bg-white rounded transition-opacity"></span>
       <span class="block h-1 w-full bg-white rounded transition-transform origin-bottom-left"></span>
@@ -58,15 +57,13 @@
 
   menuBtn.addEventListener('click', toggleMenu);
 
-  // Close menu when a link is clicked
   menuLinks.forEach(link => {
     link.addEventListener('click', () => {
       if (menuOpen) toggleMenu();
     });
   });
 
-  // Optional: Close menu on window resize if screen becomes desktop
   window.addEventListener('resize', () => {
-    if (window.innerWidth >= 768 && menuOpen) toggleMenu();
+    if (window.innerWidth >= 1024 && menuOpen) toggleMenu(); // close menu on lg+ screens
   });
 </script>

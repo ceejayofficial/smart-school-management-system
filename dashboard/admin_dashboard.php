@@ -1,0 +1,48 @@
+<?php
+require_once "auth.php"; // include this for all admin pages
+?>
+<?php include "includes/header.php"; ?>
+
+<body class="flex bg-white min-h-screen">
+
+  <!-- Sidebar -->
+  <?php include "includes/sidebar.php"; ?>
+
+  <!-- Main Content -->
+  <div class="flex-1 flex flex-col">
+
+    <!-- Fixed Top Header -->
+    <header class="fixed top-0 left-0 md:left-64 right-0 bg-white shadow z-50 p-4 flex justify-between items-center">
+        <!-- Dashboard Title -->
+        <span class="text-gray-700 font-semibold">Hi, <?= htmlspecialchars($username) ?></span>
+
+        <!-- User Profile -->
+        <div class="flex items-center space-x-3">
+            <i class="fas fa-user-circle text-3xl text-gray-700"></i>
+        </div>
+    </header>
+
+    <!-- Scrollable Content -->
+    <main class="p-8 mt-20 h-screen overflow-auto bg-white">
+
+        <?php
+        // Load content dynamically based on "page" query parameter
+        $page = $_GET['page'] ?? 'home';
+        $allowed_pages = ['home', 'students', 'teachers', 'classes', 'exams', 'fees'];
+
+        if (in_array($page, $allowed_pages)) {
+            include $page . ".php"; // e.g., students.php, teachers.php
+        } else {
+            echo "<p class='text-gray-600'>Page not found.</p>";
+        }
+        ?>
+
+    </main>
+
+  </div>
+
+  <!-- Font Awesome -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous"></script>
+
+</body>
+</html>
