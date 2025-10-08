@@ -16,7 +16,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     // Prepare statement to get user by email
-    $stmt = $conn->prepare("SELECT id, username, email, password, role FROM users WHERE email = ?");
+    $stmt = $conn->prepare("SELECT user_id, username, email, password, role FROM users WHERE email = ?");
     $stmt->bind_param("s", $email);
     $stmt->execute();
     $stmt->store_result();
@@ -28,10 +28,10 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         if (password_verify($password, $dbPasswordHash)) {
             // Successful login
             session_regenerate_id(true);
-            $_SESSION['user_id'] = $userId;
-            $_SESSION['username'] = $username;
-            $_SESSION['email'] = $dbEmail;
-            $_SESSION['role'] = $role;
+            $_SESSION['user_id']   = $userId;
+            $_SESSION['username']  = $username;
+            $_SESSION['email']     = $dbEmail;
+            $_SESSION['role']      = $role;
 
             // Redirect based on role
             switch ($role) {
@@ -48,8 +48,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     $redirect = "login.php"; // fallback
             }
 
-            $_SESSION['login_success'] = "Login successful! Redirecting...";
+            $_SESSION['login_success']  = "Login successful! Redirecting...";
             $_SESSION['login_redirect'] = $redirect;
+
             header("Location: login.php");
             exit;
 

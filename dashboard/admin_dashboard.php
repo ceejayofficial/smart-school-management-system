@@ -1,5 +1,5 @@
 <?php
-require_once "auth.php"; // include this for all admin pages
+require_once "includes/auth.php"; // include this for all admin pages
 ?>
 <?php include "includes/header.php"; ?>
 

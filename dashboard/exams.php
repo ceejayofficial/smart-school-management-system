@@ -1,6 +1,4 @@
-<?php
-require_once "auth.php"; // Ensure admin is logged in
-?>
+
 
 <div class="p-8 h-screen bg-white  ml-0 md:ml-64">
     <!-- Exams & Results Actions Grid: 2 per row -->

@@ -1,5 +1,4 @@
 <?php
-require_once "./auth.php"; // ensure admin is logged in
 
 // Determine the active page
 $current_page = $_GET['page'] ?? 'home';
