@@ -1,6 +1,7 @@
 <?php
 require_once "includes/auth.php"; // include this for all admin pages
 ?>
+
 <?php include "includes/header.php"; ?>
 
 <body class="flex bg-white min-h-screen">
@@ -23,15 +24,21 @@ require_once "includes/auth.php"; // include this for all admin pages
     </header>
 
     <!-- Scrollable Content -->
-    <main class="p-8 mt-20 h-screen  bg-white">
+    <main class="p-8 mt-20 h-screen bg-white">
 
         <?php
-        // Load content dynamically based on "page" query parameter
+        // Get query parameters
         $page = $_GET['page'] ?? 'home';
-        $allowed_pages = ['home', 'students', 'teachers', 'classes', 'exams', 'fees'];
+        $process = $_GET['process'] ?? '';
 
-        if (in_array($page, $allowed_pages)) {
-            include $page . ".php"; // e.g., students.php, teachers.php
+        // Allowed pages and processes
+        $allowed_pages = ['home', 'students', 'teachers', 'classes', 'exams', 'fees', 'create_student', 'students-records'];
+        $allowed_processes = ['create_student_process', 'view_student', 'delete_student', 'update_student', 'edit_student_form', 'students-records'];
+
+        if ($process && in_array($process, $allowed_processes)) {
+            include "process/$process.php"; // include the process file
+        } elseif (in_array($page, $allowed_pages)) {
+            include "$page.php"; // include normal page
         } else {
             echo "<p class='text-gray-600'>Page not found.</p>";
         }

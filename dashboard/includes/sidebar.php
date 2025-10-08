@@ -1,58 +1,57 @@
 <?php
-
 // Determine the active page
 $current_page = $_GET['page'] ?? 'home';
 ?>
 
 <!-- Font Awesome CDN -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-papxQ+..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 <aside class="w-64 bg-blue-900 text-white flex-shrink-0 fixed h-full hidden md:flex flex-col">
+  <!-- Logo -->
   <div class="p-6 text-center border-b border-blue-800">
-    <i class="fas fa-user-graduate text-white text-5xl"></i>
-</div>
+    <i class="fas fa-user-graduate text-white text-5xl mb-2"></i>
+    <h1 class="text-white text-lg font-semibold">School Admin</h1>
+  </div>
 
-<!-- Font Awesome -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous"></script>
+  <!-- Navigation -->
+  <nav class="mt-6 flex flex-col space-y-1">
+    <?php
+    $menuItems = [
+        'home' => ['icon' => 'fas fa-tachometer-alt', 'label' => 'Dashboard'],
+        'students' => ['icon' => 'fas fa-user-graduate', 'label' => 'Students'],
+        'teachers' => ['icon' => 'fas fa-chalkboard-teacher', 'label' => 'Teachers'],
+        'classes' => ['icon' => 'fas fa-school', 'label' => 'Classes'],
+        'exams' => ['icon' => 'fas fa-file-alt', 'label' => 'Exams'],
+        'results' => ['icon' => 'fas fa-chart-line', 'label' => 'Results'],
+        'fees' => ['icon' => 'fas fa-dollar-sign', 'label' => 'Fees'],
+    ];
 
-
-   <nav class="mt-6 flex flex-col space-y-1">
-    <a href="admin_dashboard.php?page=home" class="flex items-center py-3 px-6 transition hover:bg-blue-800 <?= $current_page === 'home' ? 'bg-blue-700 font-semibold' : '' ?>">
-        <i class="fas fa-tachometer-alt mr-3"></i> Dashboard
-    </a>
-    <a href="admin_dashboard.php?page=students" class="flex items-center py-3 px-6 transition hover:bg-blue-800 <?= $current_page === 'students' ? 'bg-blue-700 font-semibold' : '' ?>">
-        <i class="fas fa-user-graduate mr-3"></i> Students
-    </a>
-    <a href="admin_dashboard.php?page=teachers" class="flex items-center py-3 px-6 transition hover:bg-blue-800 <?= $current_page === 'teachers' ? 'bg-blue-700 font-semibold' : '' ?>">
-        <i class="fas fa-chalkboard-teacher mr-3"></i> Teachers
-    </a>
-    <a href="admin_dashboard.php?page=classes" class="flex items-center py-3 px-6 transition hover:bg-blue-800 <?= $current_page === 'classes' ? 'bg-blue-700 font-semibold' : '' ?>">
-        <i class="fas fa-school mr-3"></i> Classes
-    </a>
-    <a href="admin_dashboard.php?page=exams" class="flex items-center py-3 px-6 transition hover:bg-blue-800 <?= $current_page === 'exams' ? 'bg-blue-700 font-semibold' : '' ?>">
-        <i class="fas fa-file-alt mr-3"></i> Exams & Results
-    </a>
-    <a href="admin_dashboard.php?page=fees" class="flex items-center py-3 px-6 transition hover:bg-blue-800 <?= $current_page === 'fees' ? 'bg-blue-700 font-semibold' : '' ?>">
-        <i class="fas fa-dollar-sign mr-3"></i> Fees
-    </a>
-
-    <!-- Divider before logout -->
+    foreach ($menuItems as $page => $item) {
+        $active = $current_page === $page ? 'bg-blue-700 font-semibold' : '';
+        echo '<a href="admin_dashboard.php?page='.$page.'" class="flex items-center py-3 px-6 transition hover:bg-blue-800 '.$active.'">
+                <i class="'.$item['icon'].' mr-3 w-5 text-center"></i>
+                <span class="truncate">'.$item['label'].'</span>
+              </a>';
+    }
+    ?>
+    
+    <!-- Divider -->
     <div class="border-t border-blue-800 my-6"></div>
 
     <!-- Logout -->
-    <button id="logoutBtn" class="flex items-center justify-center py-3 px-6 mt-2 bg-red-700 hover:bg-red-800 rounded transition">
-        <i class="fas fa-sign-out-alt mr-2"></i> Logout
+    <button id="logoutBtn" class="flex items-center py-3 px-6 mt-2 bg-red-700 hover:bg-red-800 rounded transition w-full">
+        <i class="fas fa-sign-out-alt mr-3 w-5 text-center"></i>
+        <span>Logout</span>
     </button>
-</nav>
-
+  </nav>
 </aside>
 
-<?php include "preloader.php"; ?>
+<!-- Font Awesome JS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js" crossorigin="anonymous"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     const logoutBtn = document.getElementById('logoutBtn');
-
     logoutBtn.addEventListener('click', () => {
         Swal.fire({
             title: 'Are you sure?',
@@ -69,3 +68,19 @@ $current_page = $_GET['page'] ?? 'home';
         });
     });
 </script>
+
+<style>
+/* Ensure icons and text align perfectly */
+nav a, #logoutBtn {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+nav a i, #logoutBtn i {
+    min-width: 1.25rem; /* same width for all icons */
+    text-align: center;
+}
+nav a span, #logoutBtn span {
+    white-space: nowrap;
+}
+</style>
