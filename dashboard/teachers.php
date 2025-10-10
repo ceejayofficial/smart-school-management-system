@@ -1,6 +1,6 @@
 
 
-<div class="p-8 h-screen bg-white  ml-0 md:ml-64">
+<div class=" h-screen bg-white  ml-0 md:ml-64">
     <!-- Teachers Actions Grid: 2 per row -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
@@ -9,7 +9,8 @@
             <i class="fas fa-user-plus text-4xl text-blue-500 mb-2"></i>
             <h3 class="text-lg font-semibold text-gray-600">Create Teacher</h3>
             <p class="text-sm text-gray-500 mt-1">Add a new teacher account to the system.</p>
-            <a href="create_teacher.php" class="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition">
+            <a href="admin_dashboard.php?page=create_teacher" 
+            class="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition">
                 <i class="fas fa-plus mr-1"></i> Add Teacher
             </a>
         </div>
@@ -19,7 +20,8 @@
             <i class="fas fa-chalkboard-teacher text-4xl text-green-500 mb-2"></i>
             <h3 class="text-lg font-semibold text-gray-600">View Teachers</h3>
             <p class="text-sm text-gray-500 mt-1">See all registered teachers with full details.</p>
-            <a href="teachers_list.php" class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition">
+            <a href="admin_dashboard.php?page=teachers_records"
+            class="mt-4 bg-green-500 hover:bg-green-600 text-white px-4 py-2 rounded transition">
                 <i class="fas fa-eye mr-1"></i> View Teachers
             </a>
         </div>

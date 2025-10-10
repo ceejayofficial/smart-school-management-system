@@ -1,6 +1,5 @@
 <?php
 require_once "../db.php"; // Database connection
-require_once "./includes/auth.php";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 

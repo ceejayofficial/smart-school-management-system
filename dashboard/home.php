@@ -1,4 +1,3 @@
-
 <?php
 require_once "../db.php";
 require_once "./includes/auth.php";
@@ -7,8 +6,13 @@ require_once "./includes/auth.php";
 $totalResult = $conn->query("SELECT COUNT(*) as total FROM students");
 $totalRow = $totalResult->fetch_assoc();
 $totalStudents = $totalRow['total'];
+
+// Get total teachers count
+$teacherResult = $conn->query("SELECT COUNT(*) as total FROM teachers");
+$teacherRow = $teacherResult->fetch_assoc();
+$totalTeachers = $teacherRow['total'];
 ?>
-<div class="p-8 h-screen bg-white overflow-auto ml-0 md:ml-64">
+<div class=" h-screen bg-white overflow-auto ml-0 md:ml-64">
     <!-- Analytics Cards Grid: 2 per row -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     <!-- Total Students -->
@@ -21,7 +25,7 @@ $totalStudents = $totalRow['total'];
         <div class="bg-white p-6 rounded-lg shadow flex flex-col items-center justify-center">
             <i class="fas fa-chalkboard-teacher text-4xl text-green-500 mb-2"></i>
             <h3 class="text-lg font-semibold text-gray-600">Total Teachers</h3>
-            <span class="text-4xl font-bold text-green-600 mt-2">0</span>
+            <span class="text-4xl font-bold text-green-600 mt-2"><?= $totalTeachers ?></span>
         </div>
 
         <!-- Total Classes -->

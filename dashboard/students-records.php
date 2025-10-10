@@ -21,7 +21,7 @@ $result = $conn->query("SELECT * FROM students ORDER BY student_id DESC LIMIT $l
     <!-- Search Box -->
     <div class="mb-4">
         <input type="text" id="searchInput" placeholder="Search students..." 
-               class="w-full md:w-3/4 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
+               class="w-full md:w-4/4 p-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-400" />
     </div>
 
     <?php if (!$result || $result->num_rows === 0): ?>

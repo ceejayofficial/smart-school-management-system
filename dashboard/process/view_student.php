@@ -51,7 +51,8 @@ if ($student):
         <?php if(!empty($student['passport'])): ?>
             <img src="data:<?= htmlspecialchars($student['passport_type']) ?>;base64,<?= base64_encode($student['passport']) ?>" 
                  alt="Passport" class="w-32 h-32 object-cover rounded">
-        <?php else: ?>
+        
+                 <?php else: ?>
             <p>No passport uploaded.</p>
         <?php endif; ?>
     </div>

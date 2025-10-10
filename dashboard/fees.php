@@ -1,6 +1,6 @@
 
 
-<div class="p-8 h-screen bg-white  ml-0 md:ml-64">
+<div class=" h-screen bg-white  ml-0 md:ml-64">
     <!-- Fees Management Grid: 2 per row -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
